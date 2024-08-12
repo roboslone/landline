@@ -37,7 +37,7 @@ class PathsConfig:
 @attrs.frozen
 class ServiceConfig:
     # Delay between two consecutive processing attempts.
-    sleep_interval: datetime.timedelta = datetime.timedelta(minutes=5)
+    sleep_interval: datetime.timedelta = datetime.timedelta(seconds=1)
 
 
 @attrs.frozen

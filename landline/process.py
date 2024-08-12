@@ -33,7 +33,7 @@ class Processor:
     """
     Returns a set of newly uploaded records IDs.
     """
-    def run_once(self, existing: set = None):
+    def run_once(self, existing: set):
         # Next, iterate over recordings in iCloud and process new ones.
         self.logger.info("processing records:")
         count = 0
@@ -56,7 +56,7 @@ class Processor:
         while True:
             try:
                 count = 0
-                for id in self.run_once():
+                for id in self.run_once(existing):
                     count += 1
                     existing.add(id)
                 if count:
