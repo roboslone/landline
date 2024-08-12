@@ -22,13 +22,18 @@ class Processor:
     def voice_memos_root(self) -> pathlib.Path:
         return pathlib.Path(self.cfg.paths.voice_memos_root)
 
-    def run_once(self):
+    def fetch_existing(self) -> set:
         self.logger.info("fetching existing recordings from Notion...")
         existing = set()
         for r in self.notion.records():
             existing.add(r['properties']['File']['rich_text'][0]['text']['content'])
         self.logger.info(f"got {len(existing)} existing recordings, processing new ones...")
+        return existing
 
+    """
+    Returns a set of newly uploaded records IDs.
+    """
+    def run_once(self, existing: set = None):
         # Next, iterate over recordings in iCloud and process new ones.
         self.logger.info("processing records:")
         count = 0
@@ -42,17 +47,21 @@ class Processor:
             result = self.whisper.transcribe(str(f), fp16=False, language=self.cfg.whisper.language)
             id = self.notion.insert(f.name, datetime.datetime.fromtimestamp(f.stat().st_mtime), f, result["text"])
             self.logger.info(f"\t{f.name}: successfully uploaded: {id}")
-            count += 1
-
-        if count:
-            self.logger.info(f"uploaded {count} new recording(s)")
+            yield id
 
     def run(self):
         self.logger.info("starting processor...")
+        existing = self.fetch_existing()
 
         while True:
             try:
-                self.run_once()
+                count = 0
+                for id in self.run_once():
+                    count += 1
+                    existing.add(id)
+                if count:
+                    self.logger.info(f"processed {count} new recording(s)")
+
             except (KeyboardInterrupt, SystemExit):
                 self.logger.info("exiting...")
                 break
