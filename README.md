@@ -1,5 +1,5 @@
 # landline
-A simple service that runs voice recognition on given files and uploads results to Notion database.
+A simple service that runs voice recognition on given files and uploads results to Notion database.  
 It's using [Whisper](https://github.com/openai/whisper) for voice recognition.
 
 ## Building
@@ -9,7 +9,7 @@ docker push roboslone/landline:0.0.1
 ```
 
 ## Running
-In this example `landline` will process recordings from iCloud. Sharing is required.
+In this example `landline` will process recordings from iCloud. Sharing is required.  
 ```
 docker run \
   -e LANDLINE_NOTION_TOKEN \
