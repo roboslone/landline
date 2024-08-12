@@ -1,7 +1,6 @@
 import datetime
 import functools
 import logging
-import os
 import pathlib
 import time
 import whisper
@@ -69,41 +68,3 @@ class Processor:
             except (KeyboardInterrupt, SystemExit):
                 self.logger.info("exiting...")
                 break
-
-# voiceMemoFolder = f"/Users/{username}"
-# print("reading voice memos from", voiceMemoFolder)
-
-# outputFolder = f"/Users/{username}/Library/Mobile Documents/com~apple~CloudDocs/Recordings"
-# print("loading model")
-# model = whisper.load_model("large")
-# print("model loaded")
-
-# files = list(filter(lambda x: x.endswith(('.m4a')), sorted(os.listdir(voiceMemoFolder))))
-# masterTranscription = ""
-
-# for index, file in enumerate(files):
-#     inputFile = os.path.join(voiceMemoFolder, file)
-#     print(f"[{index+1}/{len(files)}] {inputFile}: processing")
-
-#     fileName = os.path.splitext(file)[0];
-#     outputFile = os.path.join(outputFolder, f"{fileName}.json")
-#     if os.path.isfile(outputFile):
-#         print(f"[{index+1}/{len(files)}] transcription exists, grabbing text")
-#         with open(outputFile) as textfile:
-#             masterTranscription += processTranscript(textfile.read())
-#         continue
-
-#     print(f"[{index+1}/{len(files)}] {inputFile}: transcribing")
-#     result = model.transcribe(inputFile, fp16=False, language='Russian')
-#     masterTranscription += processTranscript(result["text"])
-
-#     print(f"[{index+1}/{len(files)}] {inputFile}: writing: {outputFile}")
-#     with open(outputFile, 'w') as f:
-#         json.dump(result, f)
-
-#     print(f"[{index+1}/{len(files)}] {inputFile}: complete")
-
-# print("all files complete, outputting master transcription")
-# masterFile = os.path.join(outputFolder, 'master_transcription.txt')
-# with open(masterFile, 'w') as f:
-#     f.write(masterTranscription)
