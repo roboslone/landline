@@ -40,8 +40,8 @@ class Processor:
             self.logger.info(f"\t{f.name}: processing")
             
             result = self.whisper.transcribe(str(f), fp16=False, language=self.cfg.whisper.language)
-            page = self.notion.insert(f.name, datetime.datetime.fromtimestamp(f.stat().st_mtime), f, result["text"])
-            self.logger.info(f"\t{f.name}: successfully uploaded: {page["id"]}")
+            id = self.notion.insert(f.name, datetime.datetime.fromtimestamp(f.stat().st_mtime), f, result["text"])
+            self.logger.info(f"\t{f.name}: successfully uploaded: {id}")
             count += 1
 
         if count:
