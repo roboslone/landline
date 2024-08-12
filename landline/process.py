@@ -27,7 +27,7 @@ class Processor:
         existing = set()
         for r in self.notion.records():
             existing.add(r['properties']['File']['rich_text'][0]['text']['content'])
-        self.logger.info(f"got {len(existing)} existing recordings, processing new ones...")
+        self.logger.info(f"got {len(existing)} existing recordings")
         return existing
 
     """
@@ -35,8 +35,6 @@ class Processor:
     """
     def run_once(self, existing: set):
         # Next, iterate over recordings in iCloud and process new ones.
-        self.logger.info("processing records:")
-        count = 0
         for f in sorted(self.voice_memos_root.glob("*.m4a")):
             if f.name in existing:
                 self.logger.info(f"\t{f.name}: already processed")
