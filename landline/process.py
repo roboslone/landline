@@ -37,7 +37,7 @@ class Processor:
         # Next, iterate over recordings in iCloud and process new ones.
         for f in sorted(self.voice_memos_root.glob("*.m4a")):
             if f.name in existing:
-                self.logger.info(f"\t{f.name}: already processed")
+                self.logger.debug(f"\t{f.name}: already processed")
                 continue
 
             self.logger.info(f"\t{f.name}: processing")
